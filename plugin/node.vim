@@ -10,8 +10,13 @@ function! s:detect(dir)
 
 	while 1
 		let is_node = 0
-		let is_node = is_node || filereadable(dir . "/package.json")
-		let is_node = is_node || isdirectory(dir . "/node_modules")
+		if dir == "/"
+			let is_node = is_node || filereadable("/package.json")
+			let is_node = is_node || isdirectory("/node_modules")
+		else
+			let is_node = is_node || filereadable(dir . "/package.json")
+			let is_node = is_node || isdirectory(dir . "/node_modules")
+		endif
 		if is_node | return node#initialize(dir) | endif
 
 		let parent = fnamemodify(dir, ":h")
